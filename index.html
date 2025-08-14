@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Travel Bucket List </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: #2c3e50;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        h1 {
+            color: white;
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            color: #bdc3c7;
+            font-size: 1.3em;
+            font-style: italic;
+        }
+        
+        section {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e9ecef;
+        }
+
+        /* Make the Top 5 section have no container/card background */
+        #top-destinations {
+            background: transparent;
+            box-shadow: none;
+            border: none;
+            padding: 0;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            font-size: 2.4em;
+            text-align: center;
+        }
+        
+        h3 {
+            color: #34495e;
+            margin: 25px 0 20px 0;
+            font-size: 1.6em;
+            font-weight: 600;
+        }
+        
+        .destinations-list {
+            padding: 0;
+            background: transparent;
+            border-left: none;
+            border-radius: 0;
+        }
+        
+        .destinations-list ol {
+            margin-left: 0;
+            padding-left: 0;
+            list-style-type: decimal;
+            list-style-position: inside;
+        }
+        
+        .destinations-list li {
+            margin: 20px 0;
+            font-size: 1.15em;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Removed transform effects for the Top 5 list items as requested */
+        
+        .destinations-list ul {
+            margin: 15px 0 10px 35px;
+            color: #555;
+        }
+        
+        .destinations-list ul li {
+            margin: 10px 0;
+            font-size: 1em;
+            background: transparent;
+            box-shadow: none;
+            padding: 5px 0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 18px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        
+        
+        .rating {
+            color: #f39c12;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .destination-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+            background: white;
+        }
+        
+        .destination-image:hover {
+            transform: translateY(-5px);
+        }
+        
+        .destination-image img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            cursor: grab;
+            transition: transform 0.3s ease;
+        }
+        
+        .destination-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .destination-image img:active {
+            cursor: grabbing;
+        }
+        
+        .image-caption {
+            padding: 20px;
+            background: #34495e;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .form-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .form-group {
+            margin: 25px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        select, input[type="date"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+        
+        select:focus, input[type="date"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+        
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .range-value {
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .drop-zone {
+            border: 2px dashed #3498db;
+            padding: 40px;
+            text-align: center;
+            border-radius: 15px;
+            background: #f8f9fa;
+            margin: 25px 0;
+            transition: all 0.3s ease;
+        }
+        
+        
+        
+        .drop-zone h3 {
+            color: #3498db;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .drop-zone p {
+            color: #7f8c8d;
+            font-size: 1.2em;
+        }
+        
+        .video-player {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .video-player h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.8em;
+        }
+        
+        iframe {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            background: #2c3e50;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        footer p {
+            margin: 10px 0;
+        }
+        
+        .audio-toggle {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: #3498db;
+            color: #fff;
+            font-size: 18px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 768px) {
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hidden background audio with toggle and upload -->
+    <audio id="backgroundAudio" loop preload="auto">
+        <source src="charlie-bgm-57048.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <button id="audioToggle" class="audio-toggle" aria-pressed="false" title="Play music">▶️</button>
+    <input id="audioFile" type="file" accept="audio/*" style="display:none" />
+    <button id="audioUpload" class="audio-toggle" style="top: 74px; background:#2ecc71" title="Upload music">♫</button>
+
+    <div class="container">
+        <header>
+            <h1>Dream Destinations</h1>
+            <p class="subtitle">I will work hard, so one day I’ll stand where my dreams take me.</p>
+        </header>
+
+        <section id="top-destinations">
+            <h2>Top 5 Dream Destinations</h2>
+            <div class="destinations-list">
+                <ol>
+                    <li>
+                        <strong>Ladakh</strong>
+                        <ul>
+                            <li>Pangong Tso Lake - Photography, camping by the lake under a starry sky</li>
+                            <li>Khardung La Pass – One of the world's highest motorable roads; breathtaking views.</li>
+                            <li>Nubra Valley – Ride a Bactrian camel in the sand dunes of Hunder.</li>
+                            <li>Thiksey Monastery – Majestic Tibetan Buddhist monastery with a giant Maitreya Buddha statue.</li>
+                            <li>Tso Moriri Lake – Less crowded than Pangong, with serene high-altitude beauty.</li>
+                        </ul>
+                        
+                    </li>
+                    <li>
+                        <strong>Finland</strong>
+                        <ul>
+                            <li>Northern Lights in Lapland – Best seen from glass igloos in Kakslauttanen or Saariselkä.</li>
+                            <li>Husky or Reindeer Sledding – Winter adventure through snowy forests</li>
+                            <li>Santa Claus Village, Rovaniemi – Christmas magic all year round.</li>
+                            <li>Sauna by a Frozen Lake – Then dip into the icy water like the locals do.</li>
+                            <li>Helsinki's Design District – Chic cafés, boutiques, and Finnish architecture.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>China</strong>
+                        <ul>
+                            <li>Great Wall (Jinshanling/Mutianyu)Hiking ancient fortifications with panoramic views.</li>
+                            <li>Zhangjiajie National Forest Park- Mountain climbing + Avatar Hallelujah Mountains + glass skywalk.</li>
+                            <li>Li River Kayaking Paddle through Guilins iconic karst mountains.</li>
+                            <li>Giant Panda Breeding Research Base, Chengdu </li>
+                        </ul>
+                       
+                    </li>
+                    <li>
+                        <strong>Switzerland</strong>
+                        <ul>
+                            <li>Jungfraujoch – Top of Europe – Train ride to a glacier at 3,454 m with year-round snow.</li>
+                            <li>Matterhorn & Zermatt – Iconic pyramid peak and charming car-free village.</li>
+                            <li>Lake Lucerne Cruise – Scenic boat ride with mountain views and charming towns.</li>
+                            <li>Bern Old Town – UNESCO heritage streets with medieval fountains and arcades.</li>
+                            <li>Grindelwald First Cliff Walk – A sky-high walkway with breathtaking views of the Alps.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Seychelles</strong>
+                        <ul>
+                            <li>Anse Source d'Argent (La Digue) – White sands and massive granite boulders.</li>
+                            <li>Vallée de Mai Nature Reserve – UNESCO site home to the rare Coco de Mer palms</li>
+                            <li>Curieuse Island – Meet giant Aldabra tortoises in their natural habitat.</li>
+                            <li>Snorkeling at Sainte Anne Marine Park – Crystal-clear waters teeming with tropical fish.</li>
+                            <li>Sunset at Beau Vallon Beach – Perfect golden-hour vibes.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <h2>Destination Scorecard</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Place</th>
+                        <th>Best Time to Visit</th>
+                        <th>Budget (₹)</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ladakh</strong></td>
+                        <td>June–September </td>
+                        <td>₹40,000–80,000 for 7 days</td>
+                        <td class="rating">⭐ 4.9/5 </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Finland</strong></td>
+                        <td>December–March & June–August </td>
+                        <td>₹1.2–2.5 lakh for 7 days</td>
+                        <td class="rating">⭐ 4.8/5 </td>
+                    </tr>
+                    <tr>
+                        <td><strong>China</strong></td>
+                        <td>April–May & September–October</td>
+                        <td>₹1–2.1 lakh for 10 days </td>
+                        <td class="rating">⭐ 4.7/5 </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Switzerland</strong></td>
+                        <td>June–September & December–February</td>
+                        <td>₹1.7–3.3 lakh for 7 days</td>
+                        <td class="rating">⭐ 4.9/5 </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Seychelles</strong></td>
+                        <td>April–May & October–November</td>
+                        <td>₹1.5–2.5 lakh for 5–7 days</td>
+                        <td class="rating">⭐ 4.8/5 </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Wanderlust Gallery</h2>
+            <div class="image-gallery">
+                <div class="destination-image">
+                    <img src="ladakh.jpg" 
+                         alt="Ladakh " 
+                         draggable="true">
+                    <div class="image-caption">Nubra valley,Ladakh</div>
+                </div>
+                <div class="destination-image">
+                    <img src="nl.jpg" 
+                         alt="Image of Northern Lights in Finland" 
+                         draggable="true">
+                    <div class="image-caption">Aurora Borealis,Finland</div>
+                </div>
+                <div class="destination-image">
+                    <img src="ch.jpg" 
+                         alt="Image of Zhangjiajie Glass Bridge" 
+                         draggable="true">
+                    <div class="image-caption">Zhangjiajie Glass Bridge, China</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Trip Planner</h2>
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="season">Preferred Travel Season:</label>
+                    <select id="season" name="season">
+                        <option value="">Select a season</option>
+                        <option value="spring">Spring (March - May)</option>
+                        <option value="summer">Summer (June - August)</option>
+                        <option value="autumn">Autumn (September - November)</option>
+                        <option value="winter">Winter (December - February)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="trip-date">Planned Trip Date:</label>
+                    <input type="date" id="trip-date" name="trip-date">
+                </div>
+                
+                <div class="form-group">
+                    <label for="budget">Budget Preference (₹):</label>
+                    <div class="range-container">
+                        <input type="range" id="budget" name="budget" min="50000" max="1000000" step="10000" value="200000">
+                        <span class="range-value" id="budget-value">₹2,00,000</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Drag & Drop Zone</h2>
+            <div class="drop-zone">
+                <h3>Drop Your Favorite Destination Here!</h3>
+                
+                <p><em>Note: This is a visual demonstration. Full drag-and-drop functionality requires JavaScript.</em></p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Not my video, yet it feels like my dream caught on camera</h2>
+            <div class="video-player">
+                
+                <iframe width="100%" height="300" 
+                        src="https://www.youtube.com/embed/ancv4uwNNoA?rel=0"
+                        title="Travel Inspiration" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+                
+            </div>
+        </section>
+
+        <footer>
+            <p>Made with love and a suitcase full of dreams✨</p>
+            <p>One day this dream will no longer be a dream — I’m living to witness these places in my lifetime</p>
+        </footer>
+    </div>
+
+    <script>
+        // Update budget range value display with proper Rupee formatting
+        const budgetSlider = document.getElementById('budget');
+        const budgetValue = document.getElementById('budget-value');
+        
+        function formatRupees(amount) {
+            if (amount >= 100000) {
+                return '₹' + (amount / 100000).toFixed(1) + ' Lakh';
+            } else if (amount >= 1000) {
+                return '₹' + (amount / 1000).toFixed(0) + 'K';
+            } else {
+                return '₹' + amount;
+            }
+        }
+        
+        budgetSlider.addEventListener('input', function() {
+            budgetValue.textContent = formatRupees(this.value);
+        });
+        
+        // Audio controls: toggle play/pause and upload custom track
+        const audio = document.getElementById('backgroundAudio');
+        const toggleBtn = document.getElementById('audioToggle');
+        const uploadBtn = document.getElementById('audioUpload');
+        const fileInput = document.getElementById('audioFile');
+        
+        audio.volume = 0.3;
+        
+        function updateToggleIcon() {
+            if (audio.paused) {
+                toggleBtn.textContent = '▶️';
+                toggleBtn.setAttribute('aria-pressed', 'false');
+                toggleBtn.title = 'Play music';
+            } else {
+                toggleBtn.textContent = '⏸';
+                toggleBtn.setAttribute('aria-pressed', 'true');
+                toggleBtn.title = 'Pause music';
+            }
+        }
+        
+        toggleBtn.addEventListener('click', async () => {
+            try {
+                if (audio.paused) {
+                    await audio.play();
+                } else {
+                    audio.pause();
+                }
+            } catch (e) {
+                console.log('Audio toggle error:', e);
+            } finally {
+                updateToggleIcon();
+            }
+        });
+        
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const objectUrl = URL.createObjectURL(file);
+            audio.src = objectUrl;
+            try {
+                await audio.play();
+            } catch (err) {
+                console.log('Autoplay blocked, press play:', err);
+            } finally {
+                updateToggleIcon();
+            }
+        });
+        
+        // Initialize toggle icon
+        updateToggleIcon();
+    </script>
+</body>
+</html>
